@@ -1,0 +1,56 @@
+Problem statement : 
+Given a string containing only the characters '0' and '1', design an algorithm to find the longest substring where all 	 the '0's are positioned on one side (either left or right) and all the '1's are positioned on the other side.
+
+Input: A string str consisting only of characters '0' and '1'.
+
+Output: The length of the longest substring satisfying the given condition.
+
+Constraints:
+The string str will only contain characters '0' and '1'.
+The length of the string str can be between 1 and 1000 characters (inclusive).
+
+
+
+Sample solution:
+S = "01010100101010101010101011"
+sp = []
+ans = [""]
+for i in S:
+    if sp == []:
+        sp.append(i)
+    elif i == "0":
+        if sp[-1][-1] == "0":
+            sp[-1] = sp[-1] + "0"
+        else:
+            sp.append(i)
+    else:
+        if sp[-1][-1] == "1":
+            sp[-1] = sp[-1] + "1"
+        else:
+            sp.append(i)
+for i in range(len(sp) - 1):
+    if len(sp[i]) + len(sp[i + 1]) > len(ans[-1]):
+        ans = [""]
+        ans.append(sp[i] + sp[i + 1])
+    elif len(sp[i]) + len(sp[i + 1]) == len(ans[-1]):
+        ans.append(sp[i] + sp[i + 1])
+ans.pop(0)
+print(ans)
+
+
+
+Test cases:
+S = "01010100101010101010101011"
+ans = ['100', '001', '011']
+
+S = "0001101111011111110101010101010"
+ans = ['01111111', '11111110']
+
+S = "000101010100111010101010101010010101111"
+ans = ['00111', '01111']
+
+S = "01"
+ans = ['01']
+
+S = "1"
+ans = ['1']

@@ -1,0 +1,93 @@
+Problem Statment:
+Few corporate guys were planning for a trek, so they decided to go on a weekend. They have selected an area which has many lakes, plain land and mountains also. They have decided to take the challenge and also to test their physical ability in rainy wheather conditions. Can you help them find the longest mountain range with maximum number of mountains in it. Return only number of mountains they have to climb as they have to carry suffucient water and food items.
+
+conditions:
+1. Given a grid of 0, 1, and 2
+2. 0 is water, 1 is land and 2 are mountain.
+
+Code:
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<vector<int>> grid;
+int ans = 0;
+
+int traverse(int x, int y){
+   if(x > grid.size() - 1 || x < 0 || y > grid[0].size() - 1 || y < 0 || grid[x][y] == 0 || grid[x][y] == 1) return 0;
+   grid[x][y] = 1;
+   int L = traverse(x, y - 1);
+   int R = traverse(x, y + 1);
+   int T = traverse(x - 1, y);
+   int B = traverse(x + 1, y);
+   int E = traverse(x - 1, y - 1);
+   int A = traverse(x - 1, y + 1);
+   int W = traverse(x + 1, y + 1);
+   int N = traverse(x + 1, y - 1);
+   
+   return L + R + T + B + E + A + W + N + 1;
+}
+
+void calMountains(){
+    for(int r = 0; r < grid.size(); r++){
+	for(int c = 0; c < grid[0].size(); c++){
+	    if(grid[r][c] == 2){
+	    	int M = traverse(r, c);
+	    	ans = max(M, ans);
+	    }
+	}
+    }
+}
+
+int main(){
+    vector<vector<int>> mat { 
+        {1, 2, 1},
+        {1, 2, 2},
+        {2, 0, 2}  
+    };
+    for(int i = 0; i < mat.size(); i++){
+    	grid.push_back(mat[i]);
+    }
+    calMountains();
+    cout << ans;
+}
+
+
+TestCases:
+1. { 
+        {1, 2, 1},
+        {1, 2, 2},
+        {2, 0, 2}  
+    }
+    ans = 5
+    
+2. { 
+        {1, 2, 1},
+        {1, 2, 2},
+        {2, 0, 2},
+        {1, 2, 1},
+    }
+    ans = 6
+    
+3. { 
+        {1, 2, 1, 1, 2, 2},
+        {1, 2, 2, 0, 2, 0},
+        {2, 0, 2, 2, 0, 2},
+        {1, 2, 1, 0, 1, 0},
+    }
+    ans = 11
+
+4. { 
+        {0, 2, 1, 1, 2, 2},
+        {0, 2, 2, 0, 0, 0},
+        {0, 0, 0, 2, 0, 2},
+        {1, 0, 1, 0, 1, 0},
+    }
+    ans = 4
+
+5. { 
+        {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}  
+    }
+    ans = 0
+
